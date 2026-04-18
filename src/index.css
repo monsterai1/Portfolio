@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 99%;
+    --foreground: 0 3% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 3% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 3% 12%;
+
+    --primary: 345 40% 72%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 340 20% 95%;
+    --secondary-foreground: 0 3% 25%;
+
+    --muted: 340 15% 96%;
+    --muted-foreground: 0 3% 52%;
+
+    --accent: 345 35% 85%;
+    --accent-foreground: 0 3% 12%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 340 15% 90%;
+    --input: 340 15% 90%;
+    --ring: 345 40% 72%;
+
+    --radius: 0.75rem;
+
+    --sakura: 345 50% 88%;
+    --sakura-deep: 345 35% 72%;
+    --stone: 0 3% 52%;
+    --ink: 0 3% 12%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 3% 12%;
+    --sidebar-primary: 345 40% 72%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 340 20% 95%;
+    --sidebar-accent-foreground: 0 3% 25%;
+    --sidebar-border: 340 15% 90%;
+    --sidebar-ring: 345 40% 72%;
+
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+
+    --card-floral-opacity: 0.18;
+  }
+
+  .dark {
+    --background: 230 25% 8%;
+    --foreground: 340 20% 92%;
+
+    --card: 230 22% 12%;
+    --card-foreground: 340 20% 92%;
+
+    --popover: 230 22% 12%;
+    --popover-foreground: 340 20% 92%;
+
+    --primary: 345 55% 75%;
+    --primary-foreground: 230 25% 10%;
+
+    --secondary: 230 20% 16%;
+    --secondary-foreground: 340 20% 92%;
+
+    --muted: 230 18% 14%;
+    --muted-foreground: 340 10% 65%;
+
+    --accent: 345 30% 35%;
+    --accent-foreground: 340 20% 95%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 230 18% 22%;
+    --input: 230 18% 22%;
+    --ring: 345 55% 75%;
+
+    --sakura: 345 60% 78%;
+    --sakura-deep: 345 50% 65%;
+    --stone: 340 8% 60%;
+    --ink: 340 20% 92%;
+
+    --sidebar-background: 230 22% 12%;
+    --sidebar-foreground: 340 20% 92%;
+    --sidebar-primary: 345 55% 75%;
+    --sidebar-primary-foreground: 230 25% 10%;
+    --sidebar-accent: 230 20% 16%;
+    --sidebar-accent-foreground: 340 20% 92%;
+    --sidebar-border: 230 18% 22%;
+    --sidebar-ring: 345 55% 75%;
+
+    --card-floral-opacity: 0.12;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(345, 35%, 80%) transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  /* Spring card with floral corner illustration */
+  .spring-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    box-shadow:
+      0 1px 3px hsla(345, 30%, 70%, 0.08),
+      0 8px 24px hsla(345, 30%, 70%, 0.06);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .spring-card::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 110px;
+    height: 110px;
+    background-image: var(--sakura-branch-url, none);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top right;
+    opacity: var(--card-floral-opacity);
+    pointer-events: none;
+    transform: rotate(15deg);
+    transition: opacity 0.3s ease, transform 0.4s ease;
+  }
+  .spring-card:hover::before {
+    opacity: calc(var(--card-floral-opacity) * 1.6);
+    transform: rotate(8deg) scale(1.05);
+  }
+  .spring-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .spring-card:hover {
+    box-shadow:
+      0 2px 8px hsla(345, 30%, 70%, 0.12),
+      0 12px 32px hsla(345, 30%, 70%, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    color: hsl(var(--foreground));
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .marquee-track {
+    display: flex;
+    animation: marquee 30s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Sakura petal float */
+  @keyframes petal-fall {
+    0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(110vh) translateX(80px) rotate(360deg); opacity: 0; }
+  }
+
+  .sakura-petal {
+    position: absolute;
+    pointer-events: none;
+    animation: petal-fall linear infinite;
+  }
+
+  /* Hero name gradient — spring */
+  .hero-name-gradient {
+    background: linear-gradient(135deg,
+      hsl(345, 50%, 55%) 0%,
+      hsl(340, 40%, 65%) 50%,
+      hsl(350, 45%, 60%) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .hero-typing-text {
+    color: hsl(var(--muted-foreground));
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  .typing-cursor {
+    display: inline-block;
+    margin-left: 1px;
+    animation: blink 0.85s step-end infinite;
+    color: hsl(var(--primary));
+  }
+
+  /* Project card */
+  .proj-card { cursor: pointer; }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+    background: hsla(0, 0%, 0%, 0.3);
+    backdrop-filter: blur(8px);
+    animation: modal-fade-in 0.18s ease forwards;
+  }
+  @keyframes modal-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  .modal-panel {
+    max-width: 42rem; width: 100%; padding: 1.5rem;
+    max-height: 90vh; overflow-y: auto; overflow-x: hidden;
+    animation: modal-slide-in 0.2s ease forwards;
+  }
+  @keyframes modal-slide-in {
+    from { opacity: 0; transform: scale(0.94) translateY(16px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* Loader petal spin */
+  @keyframes petal-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .loader-petal-ring {
+    animation: petal-spin linear infinite;
+    transform-origin: center;
+  }
+
+  /* Puppy bobbing */
+  @keyframes puppy-bob {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%      { transform: translateY(-6px) rotate(3deg); }
+  }
+  .puppy-bob { animation: puppy-bob 2.4s ease-in-out infinite; }
+}
