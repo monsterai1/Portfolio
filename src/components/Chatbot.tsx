@@ -13,7 +13,7 @@ const portfolio = {
   name: "Aoi Mizuno",
   title: "AI Engineer & Full-Stack Developer",
   location: "Nagoya, Japan",
-  email: "romandoroshenko456@gmail.com",
+  email: "monsterai603@gmail.com",
   experience: "8+ years",
   education: "M.S. in Software Engineering from Nagoya University, Diploma from Nagoya College of Design & Technology",
   companies: "SAP Japan, EM Systems, Union Software Management",

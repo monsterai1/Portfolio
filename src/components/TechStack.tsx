@@ -16,8 +16,8 @@ const skillCategories = [
     icon: Layout,
     skills: [
       { name: "React", stars: 5 },
-      { name: "Next.js", stars: 4 },
-      { name: "Tailwind CSS", stars: 5 },
+      { name: "Next.js", stars: 5 },
+      { name: "Tailwind CSS", stars: 4 },
     ],
   },
   {

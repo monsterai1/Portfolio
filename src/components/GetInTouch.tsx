@@ -33,7 +33,7 @@ const GetInTouch = () => {
                 <Mail className="w-5 h-5 text-primary" />
                 <div>
                   <h4 className="font-display text-sm text-foreground">Email</h4>
-                  <p className="font-body text-sm text-muted-foreground">romandoroshenko456@gmail.com</p>
+                  <p className="font-body text-sm text-muted-foreground">monsterai603@gmail.com</p>
                 </div>
               </div>
             </div>

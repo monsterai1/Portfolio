@@ -35,25 +35,29 @@ import p29 from "@/assets/project-29.jpg";
 import p30 from "@/assets/project-30.jpg";
 
 type Category = "AI" | "Fullstack";
-type Project = { name: string; desc: string; images: string[]; github: string; live: string; category: Category };
+type Project = { name: string; desc: string; images: string[]; github?: string; live?: string; category: Category };
 
 const projects: Project[] = [
-  { name: "AI Chatbot Platform",      category: "AI",        desc: "Conversational AI platform with multi-model support and real-time streaming responses.", images: [p1, p13, p25],  github: "#", live: "#" },
-  { name: "AI Art Generator",         category: "AI",        desc: "Generative AI tool for creating artwork using diffusion models and style transfer.",     images: [p3, p15, p27],  github: "#", live: "#" },
-  { name: "Autonomous Navigation",    category: "AI",        desc: "Computer vision system for autonomous vehicle path planning and obstacle detection.",    images: [p4, p16, p28],  github: "#", live: "#" },
-  { name: "NLP Translation Engine",   category: "AI",        desc: "Multi-language translation system powered by transformer models with context awareness.",images: [p5, p17, p29],  github: "#", live: "#" },
-  { name: "Voice Assistant",          category: "AI",        desc: "AI-powered voice recognition and synthesis system with natural language understanding.", images: [p6, p18, p30],  github: "#", live: "#" },
-  { name: "Face Recognition API",     category: "AI",        desc: "Real-time facial detection and recognition API with privacy-preserving techniques.",     images: [p7, p19, p25],  github: "#", live: "#" },
-  { name: "Medical AI Assistant",     category: "AI",        desc: "Healthcare AI that assists in diagnostics with medical image analysis capabilities.",    images: [p9, p21, p27],  github: "#", live: "#" },
-  { name: "Deep Learning Framework",  category: "AI",        desc: "Custom deep learning framework with auto-differentiation and GPU acceleration.",        images: [p10, p22, p28], github: "#", live: "#" },
-  { name: "Recommendation Engine",    category: "AI",        desc: "Collaborative and content-based filtering recommendation system for e-commerce.",       images: [p11, p23, p29], github: "#", live: "#" },
-  { name: "Data Analytics Dashboard", category: "Fullstack", desc: "Real-time analytics dashboard with ML-powered insights and predictive modeling.",        images: [p2, p14, p26],  github: "#", live: "#" },
-  { name: "Smart Factory IoT",        category: "Fullstack", desc: "Industrial automation system with predictive maintenance and anomaly detection.",        images: [p8, p20, p26],  github: "#", live: "#" },
-  { name: "AI Web Builder",           category: "Fullstack", desc: "Intelligent website builder using LLMs to generate responsive web applications.",       images: [p12, p24, p30], github: "#", live: "#" },
+  { name: "AI Chatbot Platform",      category: "AI",        desc: "Conversational AI platform with multi-model support and real-time streaming responses.", images: [p1, p13, p25],  github: "https://github.com/monsterai1/ChatPlatform_AI" },
+  { name: "AI Art Generator",         category: "AI",        desc: "Generative AI tool for creating artwork using diffusion models and style transfer.",     images: [p3, p15, p27],  github: "https://github.com/easydiffusion/easydiffusion", live: "https://easydiffusion.github.io/" },
+  { name: "Autonomous Navigation",    category: "AI",        desc: "Computer vision system for autonomous vehicle path planning and obstacle detection.",    images: [p4, p16, p28],  github: "https://github.com/microsoft/AirSim", live: "https://microsoft.github.io/AirSim/" },
+  { name: "NLP Translation Engine",   category: "AI",        desc: "Multi-language translation system powered by transformer models with context awareness.",images: [p5, p17, p29],  github: "https://github.com/LibreTranslate/LibreTranslate", live: "https://libretranslate.com/" },
+  { name: "Voice Assistant",          category: "AI",        desc: "AI-powered voice recognition and synthesis system with natural language understanding.", images: [p6, p18, p30],  },
+  { name: "Face Recognition API",     category: "AI",        desc: "Real-time facial detection and recognition API with privacy-preserving techniques.",     images: [p7, p19, p25],  },
+  { name: "Medical AI Assistant",     category: "AI",        desc: "Healthcare AI that assists in diagnostics with medical image analysis capabilities.",    images: [p9, p21, p27],  },
+  { name: "Deep Learning Framework",  category: "AI",        desc: "Custom deep learning framework with auto-differentiation and GPU acceleration.",        images: [p10, p22, p28],  },
+  { name: "Recommendation Engine",    category: "AI",        desc: "Collaborative and content-based filtering recommendation system for e-commerce.",       images: [p11, p23, p29],  },
+  { name: "Data Analytics Dashboard", category: "Fullstack", desc: "Real-time analytics dashboard with ML-powered insights and predictive modeling.",        images: [p2, p14],  github: "https://github.com/monsterai1/Data-Analytics" },
+  { name: "E-shop with AI",        category: "Fullstack", desc: "E-commerce site with Javascript and Python. Implemented AI for user experience",        images: [p8, p20, p26],  github: "https://github.com/monsterai1/E-commerce", live: "https://fuwamarket.com/" },
+  { name: "AI Web Builder",           category: "Fullstack", desc: "Intelligent website builder using LLMs to generate responsive web applications.",       images: [p12, p24, p30], },
 ];
 
 const ProjectModal = memo(({ project, onClose }: { project: Project; onClose: () => void }) => {
   const [slide, setSlide] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  const goNext = () => { setDirection(1);  setSlide((s) => (s + 1) % project.images.length); };
+  const goPrev = () => { setDirection(-1); setSlide((s) => (s + project.images.length - 1) % project.images.length); };
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -76,20 +80,33 @@ const ProjectModal = memo(({ project, onClose }: { project: Project; onClose: ()
           </button>
         </div>
 
-        <div className="relative rounded-lg overflow-hidden mb-4 bg-secondary">
-          <img key={slide} src={project.images[slide]} alt={`${project.name} screenshot ${slide + 1}`}
-            className="w-full h-64 object-cover" width={640} height={256} />
-          <button onClick={() => setSlide((s) => (s + 2) % 3)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-white/80 hover:bg-white transition" aria-label="Previous image">
+        <div className="relative rounded-lg overflow-hidden mb-4 bg-secondary" style={{ height: 256 }}>
+          <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <motion.img
+              key={slide}
+              src={project.images[slide]}
+              alt={`${project.name} screenshot ${slide + 1}`}
+              className="w-full h-64 object-cover absolute inset-0"
+              width={640}
+              height={256}
+              custom={direction}
+              initial={{ x: direction * 60, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: direction * -60, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            />
+          </AnimatePresence>
+          <button onClick={goPrev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-white/80 hover:bg-white transition z-10" aria-label="Previous image">
             <ChevronLeft className="w-5 h-5 text-foreground" />
           </button>
-          <button onClick={() => setSlide((s) => (s + 1) % 3)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-white/80 hover:bg-white transition" aria-label="Next image">
+          <button onClick={goNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-white/80 hover:bg-white transition z-10" aria-label="Next image">
             <ChevronRight className="w-5 h-5 text-foreground" />
           </button>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
-            {[0, 1, 2].map((i) => (
-              <button key={i} onClick={() => setSlide(i)} aria-label={`Image ${i + 1}`}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {project.images.map((_, i) => (
+              <button key={i} onClick={() => { setDirection(i > slide ? 1 : -1); setSlide(i); }} aria-label={`Image ${i + 1}`}
                 className={`w-2 h-2 rounded-full transition-all ${i === slide ? "bg-primary scale-125" : "bg-white/60"}`} />
             ))}
           </div>
@@ -97,12 +114,16 @@ const ProjectModal = memo(({ project, onClose }: { project: Project; onClose: ()
 
         <p className="font-body text-foreground text-sm mb-4">{project.desc}</p>
         <div className="flex gap-3">
-          <a href={project.github} className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-foreground font-body text-sm hover:bg-secondary/80 transition">
-            <Github className="w-4 h-4" /> GitHub
-          </a>
-          <a href={project.live} className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-body text-sm hover:opacity-90 transition">
-            <ExternalLink className="w-4 h-4" /> Live Demo
-          </a>
+          {project.github && (
+            <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-foreground font-body text-sm hover:bg-secondary/80 transition">
+              <Github className="w-4 h-4" /> GitHub
+            </a>
+          )}
+          {project.live && (
+            <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-body text-sm hover:opacity-90 transition">
+              <ExternalLink className="w-4 h-4" /> Live Demo
+            </a>
+          )}
         </div>
       </div>
     </div>,

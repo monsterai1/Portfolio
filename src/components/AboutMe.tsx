@@ -43,7 +43,7 @@ const AboutMe = () => (
         <div className="flex flex-wrap gap-3 mt-6">
           {[
             { label: "Nagoya, Japan", color: "bg-secondary" },
-            { label: "romandoroshenko456@gmail.com", color: "bg-accent/40" },
+            { label: "monsterai603@gmail.com", color: "bg-accent/40" },
             { label: "8+ Years Experience", color: "bg-secondary" },
           ].map((item, i) => (
             <motion.span
